@@ -1,26 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-osrs-stone: #2a2118;
+  --color-osrs-panel: #3d3022;
+  --color-osrs-panel-light: #4a3a28;
+  --color-osrs-gold: #8c7a4a;
+  --color-osrs-gold-light: #c8a84b;
+  --color-osrs-yellow: #ffff00;
+  --color-osrs-orange: #ff981f;
+  --color-osrs-green: #00b000;
+  --color-osrs-red: #cc0000;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer utilities {
+  .osrs-border {
+    border: 3px solid #8c7a4a;
+    box-shadow:
+      inset 0 0 0 1px #2a2118,
+      0 0 0 1px #2a2118,
+      inset 2px 2px 0 #c8a84b,
+      inset -2px -2px 0 #5a4a2a;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .osrs-border-thin {
+    border: 2px solid #8c7a4a;
+    box-shadow:
+      inset 1px 1px 0 #c8a84b,
+      inset -1px -1px 0 #5a4a2a;
+  }
+
+  .osrs-panel {
+    background: linear-gradient(135deg, #3d3022 0%, #2e2418 50%, #3d3022 100%);
+  }
+
+  .osrs-tile {
+    background: linear-gradient(145deg, #4a3a28 0%, #3a2d1e 60%, #2e2418 100%);
+    border: 2px solid #6b5a35;
+    box-shadow:
+      inset 1px 1px 0 rgba(200,168,75,0.3),
+      inset -1px -1px 0 rgba(0,0,0,0.5),
+      0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .osrs-tile-completed {
+    background: linear-gradient(145deg, #1a3a1a 0%, #142814 60%, #0e1e0e 100%);
+    border: 2px solid #2d6b2d;
+    box-shadow:
+      inset 1px 1px 0 rgba(0,200,0,0.2),
+      inset -1px -1px 0 rgba(0,0,0,0.5),
+      0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .image-pixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  .osrs-text-shadow {
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  }
+
+  .osrs-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .osrs-scrollbar::-webkit-scrollbar-track {
+    background: #2a2118;
+  }
+  .osrs-scrollbar::-webkit-scrollbar-thumb {
+    background: #8c7a4a;
+    border: 1px solid #2a2118;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #2a2118;
+  color: #ffff00;
+  font-family: 'Trebuchet MS', 'Arial', sans-serif;
+  background-image:
+    radial-gradient(ellipse at top, #3d3022 0%, #2a2118 60%);
+  min-height: 100vh;
 }
