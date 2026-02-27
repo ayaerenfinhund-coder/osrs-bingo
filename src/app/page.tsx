@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { BingoBoard } from '@/components/BingoBoard'
+import { Countdown } from '@/components/Countdown'
+import { TutorialModal } from '@/components/TutorialModal'
 
 export const revalidate = 0
 
@@ -32,38 +34,40 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen p-3 sm:p-6 flex flex-col items-center gap-4">
-      {/* Header */}
-      <header className="w-full max-w-6xl flex items-center justify-between pb-3" style={{ borderBottom: '2px solid #8c7a4a' }}>
-        <div>
+    <main className="min-h-screen p-1 sm:p-2 flex flex-col items-center gap-0">
+      <TutorialModal />
+
+      <div className="w-full max-w-6xl scroll-edge-top" />
+
+      <div className="w-full max-w-6xl bg-osrs-parchment px-3 pt-3 pb-3 sm:px-6 sm:pt-4 sm:pb-4 flex flex-col items-center gap-0">
+
+        <header className="w-full flex flex-col items-center gap-0.5 pb-1">
           <h1
-            className="text-3xl sm:text-5xl font-black tracking-widest uppercase"
+            className="text-2xl sm:text-3xl font-black tracking-widest text-center"
             style={{
-              color: '#c8a84b',
-              textShadow: '2px 2px 0 #000, 0 0 20px rgba(200,168,75,0.3)',
               fontFamily: 'Georgia, serif',
+              color: '#3a2b12',
+              textShadow: '1px 1px 0 rgba(255,255,255,0.4)',
             }}
           >
-            OSRS BINGO
+            OSM Bingo
           </h1>
-        </div>
-        <div
-          className="hidden sm:flex items-center gap-2 px-3 py-1 text-xs"
-          style={{ color: '#8c7a4a', border: '1px solid #5a4a2a', background: '#2a2118' }}
-        >
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          Live
-        </div>
-      </header>
+          <Countdown targetDate="2026-02-27T07:00:00+01:00" endDate="2026-03-27T23:59:00+01:00" />
+          <div className="w-full mt-0.5 osrs-divider" />
+        </header>
 
-      {/* Board */}
-      <div className="w-full max-w-6xl">
-        <BingoBoard
-          initialPlayers={players}
-          initialTiles={tiles}
-          initialCompletions={completions}
-        />
+        <div className="w-full">
+          <BingoBoard
+            initialPlayers={players}
+            initialTiles={tiles}
+            initialCompletions={completions}
+          />
+        </div>
+
+        <div className="w-full mt-2 osrs-divider" />
       </div>
+
+      <div className="w-full max-w-6xl scroll-edge-bottom" />
     </main>
   )
 }

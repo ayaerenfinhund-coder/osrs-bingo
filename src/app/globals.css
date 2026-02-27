@@ -1,55 +1,168 @@
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --color-osrs-stone: #2a2118;
-  --color-osrs-panel: #3d3022;
-  --color-osrs-panel-light: #4a3a28;
-  --color-osrs-gold: #8c7a4a;
-  --color-osrs-gold-light: #c8a84b;
-  --color-osrs-yellow: #ffff00;
-  --color-osrs-orange: #ff981f;
-  --color-osrs-green: #00b000;
-  --color-osrs-red: #cc0000;
-}
-
 @layer utilities {
-  .osrs-border {
-    border: 3px solid #8c7a4a;
-    box-shadow:
-      inset 0 0 0 1px #2a2118,
-      0 0 0 1px #2a2118,
-      inset 2px 2px 0 #c8a84b,
-      inset -2px -2px 0 #5a4a2a;
+  /* Main background stone texture */
+  .bg-osrs-stone {
+    background-color: #242217;
+    background-image: 
+      url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
+      radial-gradient(circle at 50% 50%, #2a251a 0%, #15140e 100%);
+    background-attachment: fixed;
   }
 
-  .osrs-border-thin {
-    border: 2px solid #8c7a4a;
+  .bg-osrs-parchment {
+    background-color: #a8884a;
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E"),
+      linear-gradient(90deg, rgba(40,25,5,0.25) 0%, rgba(40,25,5,0.08) 5%, transparent 12%, transparent 88%, rgba(40,25,5,0.08) 95%, rgba(40,25,5,0.25) 100%);
     box-shadow:
-      inset 1px 1px 0 #c8a84b,
-      inset -1px -1px 0 #5a4a2a;
+      inset 3px 0 10px rgba(40,25,5,0.2),
+      inset -3px 0 10px rgba(40,25,5,0.2),
+      0 0 0 2px #5a4010,
+      0 0 0 4px #2a1c08,
+      0 6px 20px rgba(0,0,0,0.7);
+    border: 2px solid #5a4010;
+    outline: 1.5px solid #2a1c08;
+    position: relative;
   }
 
-  .osrs-panel {
-    background: linear-gradient(135deg, #3d3022 0%, #2e2418 50%, #3d3022 100%);
+  .scroll-edge-top { display: none; }
+  .scroll-edge-bottom { display: none; }
+
+  .osrs-divider {
+    width: 100%;
+    height: 0;
+    border-top: 1px solid rgba(80,50,10,0.45);
+    border-bottom: 1px solid rgba(255,220,140,0.35);
+    margin: 0;
   }
 
-  .osrs-tile {
-    background: linear-gradient(145deg, #4a3a28 0%, #3a2d1e 60%, #2e2418 100%);
-    border: 2px solid #6b5a35;
-    box-shadow:
-      inset 1px 1px 0 rgba(200,168,75,0.3),
-      inset -1px -1px 0 rgba(0,0,0,0.5),
-      0 2px 4px rgba(0,0,0,0.5);
+  /* Typography */
+  .osrs-heading {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #ff981f;
+    text-shadow: 2px 2px 0 #000;
   }
 
-  .osrs-tile-completed {
-    background: linear-gradient(145deg, #1a3a1a 0%, #142814 60%, #0e1e0e 100%);
-    border: 2px solid #2d6b2d;
+  .osrs-text {
+    color: #2a1f0a;
+  }
+
+  /* Board frame — the outer wrapper around the 5x5 grid */
+  .osrs-board-frame {
+    background: #1a1610;
+    border: 4px solid #8a7235;
     box-shadow:
-      inset 1px 1px 0 rgba(0,200,0,0.2),
-      inset -1px -1px 0 rgba(0,0,0,0.5),
-      0 2px 4px rgba(0,0,0,0.5);
+      0 0 0 2px #050403,
+      6px 10px 28px rgba(0,0,0,0.85),
+      inset 2px 2px 0 rgba(255,220,100,0.12),
+      inset -1px -1px 0 rgba(0,0,0,0.6);
+    padding: 5px;
+  }
+
+  /* Tiles inside the parchment */
+  .osrs-tile-inner {
+    background: #3a2e1c;
+    border-top: 2px solid #6a5830;
+    border-left: 2px solid #6a5830;
+    border-right: 2px solid #080604;
+    border-bottom: 2px solid #080604;
+    box-shadow:
+      inset 1px 1px 0 rgba(255,220,100,0.1),
+      inset -1px -1px 0 rgba(0,0,0,0.4),
+      0 3px 6px rgba(0,0,0,0.6);
+  }
+  
+  .osrs-tile-partial-inner {
+    background: #5a420e;
+    border-top: 2px solid #9a7a22;
+    border-left: 2px solid #9a7a22;
+    border-right: 2px solid #100a02;
+    border-bottom: 2px solid #100a02;
+    box-shadow:
+      inset 1px 1px 0 rgba(255,220,100,0.15),
+      inset -1px -1px 0 rgba(0,0,0,0.4),
+      0 3px 6px rgba(0,0,0,0.6);
+  }
+
+  .osrs-tile-completed-inner {
+    background: #1e5c1e;
+    border-top: 2px solid #5edd5e;
+    border-left: 2px solid #5edd5e;
+    border-right: 2px solid #0a1a0a;
+    border-bottom: 2px solid #0a1a0a;
+    box-shadow:
+      inset 1px 1px 0 rgba(150,255,150,0.2),
+      inset -1px -1px 0 rgba(0,0,0,0.4),
+      0 3px 8px rgba(0,0,0,0.7),
+      0 0 14px rgba(60,200,60,0.45);
+  }
+
+  /* Pixel-crisp text: kills antialiasing, forces normal weight */
+  .osrs-pixel-text {
+    font-weight: normal;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    -webkit-text-stroke: 0;
+    text-shadow: 1px 1px 0px #000;
+  }
+
+  /* Pixel-art player button — default state */
+  .osrs-btn {
+    border-radius: 0;
+    border: 2px solid #382418;
+    box-shadow: none;
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.05s;
+    /* Lock to integer pixel size — prevents sub-pixel font distortion */
+    font-size: 13px;
+    font-weight: normal;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    -webkit-text-stroke: 0;
+    text-shadow: 1px 1px 0px #000;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    min-width: 0;
+    width: 100%;
+  }
+  .osrs-btn:hover {
+    background: rgba(255,255,255,0.28);
+  }
+
+  /* Pixel-art player button — selected/active state */
+  .osrs-btn-active {
+    border-radius: 0;
+    border: 2px solid #382418;
+    background: rgba(60,30,10,0.55);
+    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.5);
+    cursor: pointer;
+    /* Same crisp rules as default */
+    font-size: 13px;
+    font-weight: normal;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    -webkit-text-stroke: 0;
+    text-shadow: 1px 1px 0px #000;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Inner text span inside osrs-btn — inherit color only, zero shadow to prevent stacking */
+  .osrs-btn-text {
+    font-size: inherit;
+    font-weight: inherit;
+    -webkit-font-smoothing: inherit;
+    font-smooth: inherit;
+    text-rendering: inherit;
+    text-shadow: none;
+    -webkit-text-stroke: 0;
   }
 
   .image-pixelated {
@@ -57,27 +170,25 @@
     image-rendering: crisp-edges;
   }
 
-  .osrs-text-shadow {
-    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-  }
-
   .osrs-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
   .osrs-scrollbar::-webkit-scrollbar-track {
-    background: #2a2118;
+    background: #ba9e63;
   }
   .osrs-scrollbar::-webkit-scrollbar-thumb {
-    background: #8c7a4a;
-    border: 1px solid #2a2118;
+    background: #8b6e3f;
+    border: 1px solid #ba9e63;
   }
 }
 
 body {
-  background-color: #2a2118;
-  color: #ffff00;
-  font-family: 'Trebuchet MS', 'Arial', sans-serif;
-  background-image:
-    radial-gradient(ellipse at top, #3d3022 0%, #2a2118 60%);
+  background-color: #242217;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 50%, #2a251a 0%, #15140e 100%);
+  background-attachment: fixed;
+  color: #3a2b12;
+  font-family: 'Arial', sans-serif;
   min-height: 100vh;
 }

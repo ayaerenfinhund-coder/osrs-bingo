@@ -8,6 +8,7 @@ interface LeaderboardProps {
 }
 
 const RANK_COLORS = ['#ffd700', '#c0c0c0', '#cd7f32', '#aaaaaa', '#aaaaaa', '#aaaaaa']
+const RANK_LABELS = ['1st', '2nd', '3rd', '4th', '5th', '6th']
 
 export function Leaderboard({ players, completionsCount }: LeaderboardProps) {
   const sortedPlayers = [...players].sort((a, b) => {
@@ -16,115 +17,57 @@ export function Leaderboard({ players, completionsCount }: LeaderboardProps) {
     return bCount - aCount
   })
 
-  const totalTiles = 25
+  const maxPoints = 75 // 5 rows × 5 tiles × (1+2+3+4+5)/5 avg = 5+10+15+20+25
+  const totalPoints = Object.values(completionsCount).reduce((a, b) => a + b, 0)
 
   return (
     <div
-      className="flex flex-col w-full"
+      className="w-full flex flex-col mt-4"
       style={{
-        background: 'linear-gradient(180deg, #3d3022 0%, #2a2118 100%)',
-        border: '3px solid #8c7a4a',
-        boxShadow: 'inset 2px 2px 0 #c8a84b, inset -2px -2px 0 #5a4a2a, 0 4px 16px rgba(0,0,0,0.6)',
+        background: '#1a1610',
+        border: '4px solid #8a7235',
+        boxShadow: '0 0 0 2px #050403, 6px 10px 28px rgba(0,0,0,0.85), inset 2px 2px 0 rgba(255,220,100,0.12), inset -1px -1px 0 rgba(0,0,0,0.6)',
       }}
     >
-      {/* Header */}
-      <div
-        className="px-4 py-3 text-center"
-        style={{
-          background: 'linear-gradient(180deg, #4a3a28 0%, #3a2d1e 100%)',
-          borderBottom: '2px solid #8c7a4a',
-          boxShadow: 'inset 0 -1px 0 #5a4a2a',
-        }}
-      >
-        <h2
-          className="text-base font-bold tracking-widest uppercase"
-          style={{ color: '#c8a84b', textShadow: '1px 1px 0 #000' }}
-        >
-          ⚔ Leaderboard ⚔
-        </h2>
+      <div className="px-4 py-2 flex items-center justify-between" style={{ background: '#2a1e08', borderBottom: '2px solid #0a0806', boxShadow: 'inset 0 -1px 0 rgba(255,220,100,0.08)' }}>
+        <h2 className="text-sm tracking-widest uppercase" style={{ color: '#ffb000', textShadow: '1px 1px 0 #000' }}>Leaderboard</h2>
+        <span className="text-xs uppercase tracking-wider" style={{ color: '#8c7a4a', textShadow: '1px 1px 0 #000' }}>
+          <span style={{ color: '#ffb000' }}>{totalPoints}</span> total pts
+        </span>
       </div>
 
-      {/* Player Rows */}
-      <div className="flex flex-col divide-y" style={{ borderColor: '#3a2d1e' }}>
+      <div className="flex flex-col" style={{ background: '#1a1610', gap: '3px', padding: '5px' }}>
         {sortedPlayers.map((player, idx) => {
-          const count = completionsCount[player.id] || 0
-          const pct = Math.round((count / totalTiles) * 100)
+          const pts = completionsCount[player.id] || 0
+          const pct = Math.round((pts / maxPoints) * 100)
+          const isComplete = pts === maxPoints
           return (
             <div
               key={player.id}
-              className="flex items-center gap-3 px-4 py-2.5 transition-colors"
-              style={{ borderColor: '#3a2d1e' }}
+              className="flex items-center gap-3 px-3 py-2"
+              style={{
+                background: '#3a2e1c',
+                borderTop: '2px solid #6a5830',
+                borderLeft: '2px solid #6a5830',
+                borderRight: '2px solid #080604',
+                borderBottom: '2px solid #080604',
+                boxShadow: 'inset 1px 1px 0 rgba(255,220,100,0.1), inset -1px -1px 0 rgba(0,0,0,0.4)',
+              }}
             >
-              {/* Rank */}
-              <span
-                className="text-sm font-bold w-5 text-center shrink-0"
-                style={{ color: RANK_COLORS[idx] ?? '#888', textShadow: '1px 1px 0 #000' }}
-              >
-                {idx + 1}
+              <span className="text-xs shrink-0 font-sans w-6 text-right" style={{ color: RANK_COLORS[idx] ?? '#aaaaaa', textShadow: '1px 1px 0 #000' }}>
+                {RANK_LABELS[idx] ?? `${idx + 1}`}
               </span>
-
-              {/* Color swatch */}
-              <div
-                className="w-3 h-3 rounded-sm shrink-0"
-                style={{
-                  backgroundColor: player.color_hex,
-                  boxShadow: `0 0 4px ${player.color_hex}99, inset 0 0 0 1px rgba(0,0,0,0.4)`,
-                }}
-              />
-
-              {/* Name + progress bar */}
-              <div className="flex-1 min-w-0">
-                <div
-                  className="text-xs font-bold truncate"
-                  style={{ color: '#ffff00', textShadow: '1px 1px 0 #000' }}
-                >
-                  {player.name}
-                </div>
-                {/* Progress bar */}
-                <div
-                  className="mt-1 h-1.5 w-full rounded-sm overflow-hidden"
-                  style={{ background: '#1a1410' }}
-                >
-                  <div
-                    className="h-full rounded-sm transition-all duration-500"
-                    style={{
-                      width: `${pct}%`,
-                      background: count === totalTiles
-                        ? 'linear-gradient(90deg, #00b000, #00ff00)'
-                        : `linear-gradient(90deg, ${player.color_hex}88, ${player.color_hex})`,
-                    }}
-                  />
-                </div>
+              <div className="w-2.5 h-2.5 rotate-45 shrink-0" style={{ backgroundColor: player.color_hex, border: '1px solid rgba(0,0,0,0.4)' }} />
+              <span className="text-sm font-sans w-28 shrink-0 truncate" style={{ color: '#c8a84b', textShadow: '1px 1px 0 #000' }}>{player.name}</span>
+              <div className="flex-1 h-2 overflow-hidden" style={{ background: '#0a0806', borderTop: '1px solid #050403', borderLeft: '1px solid #050403' }}>
+                <div className="h-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: isComplete ? '#3a9a3a' : player.color_hex }} />
               </div>
-
-              {/* Score */}
-              <div className="shrink-0 text-right">
-                <span
-                  className="text-sm font-bold"
-                  style={{
-                    color: count === totalTiles ? '#00ff00' : '#00b000',
-                    textShadow: '1px 1px 0 #000',
-                  }}
-                >
-                  {count}
-                </span>
-                <span className="text-xs" style={{ color: '#888' }}>/25</span>
-              </div>
+              <span className="text-xs shrink-0 font-sans w-14 text-right" style={{ color: isComplete ? '#7fff7f' : '#c8a84b', textShadow: '1px 1px 0 #000' }}>
+                {pts}<span className="opacity-60"> pts</span>
+              </span>
             </div>
           )
         })}
-      </div>
-
-      {/* Footer total */}
-      <div
-        className="px-4 py-2 text-center text-xs"
-        style={{
-          borderTop: '2px solid #8c7a4a',
-          color: '#8c7a4a',
-          background: 'linear-gradient(180deg, #2e2418 0%, #2a2118 100%)',
-        }}
-      >
-        {Object.values(completionsCount).reduce((a, b) => a + b, 0)} total completions
       </div>
     </div>
   )
